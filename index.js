@@ -1,2 +1,5 @@
-const express = require(express);
-var port = 8000;
+const express = require('express');
+const port = 8000;
+const app = express();
+
+app.listen('/',function{})
