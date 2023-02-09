@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/home.css">
+    <title><%= title %></title>
+</head>
+<body>
+    <div id="main"> 
+       <h1>TODO App</h1>
+
+       <!-- Taking Input in the Form -->
+        <div id="addTask">
+            <form action="/create-task" method="POST" >
+
+                <hr>
+
+                <label for="description">Description</label><br>
+                <input id="description" type="text" name="task" placeholder="What do you need to do?" required>    <br>
+
+                <hr>
+
+
+                <div id="inputflex">
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="category">Category</label>  <br>
+                                    <select id="category">     
+                                        <option selected>Choose a Category</option>
+                                        <option value="work">WORK</option>
+                                        <option value="college">COLLEGE</option>
+                                        <option value="personal">PERSONAL</option>
+                                        <option value="home">HOME</option>
+                                    </select>          
+                            </td>
+
+                            <td class="vl">
+                                <label for="date">Due Date</label>   <br>
+                                <input id="date" type="date" name="deadline" placeholder="MM/DD/YYYY">    
+                            </td>
+                            
+                        </tr>
+                    </table>
+                        <hr>
+                        
+                        <button type="submit" id="addtask">+ ADD TASK</button>
+
+                </div>
+
+            </form>
+
+                <!-- button to delete tasks -->
+                <a href="/delete-tasks/<% %>">      
+                    <button id="delete"><i class="fa-solid fa-trash"></i> DELETE TASK</button>
+                </a>
+        </div>
+
+
+    
+
+    <!-- Main tasks Display-->
+    <div id="tasks">
+        <hr>
+        <ul type="none">
+            <% for(let i of task_list) { %>
+
+            <li>
+                
+                <input type="checkbox" class="largerCheckbox">
+               <%= i.tname %> <br>
+
+               <% let k=i.duedate %>
+               <% let yy = k.slice(0,4) %>
+               <% let mm = k.slice(5,7) %>
+               <% let dd = k.slice(8,10) %>
+
+               <% function getMonthName(monthNumber) { %>
+               <% const date = new Date(); %>
+               <% date.setMonth(monthNumber - 1); %>
+               <% return date.toLocaleString('en-US', { month: 'long' }); %>
+               <% } %>
+
+               <% mm = getMonthName(mm); %>
+               <% mm = mm.slice(0,3); %>
+               <% mm = mm.toUpperCase(); %>
+
+               <% let due_date= mm + " " + dd + ", " + yy %>
+               <%  %>
+
+                &emsp;&ensp;<i class="fa-solid fa-calendar-days"></i> <%= due_date %>
+            </li>
+            <hr>
+
+            <% } %>
+        </ul>
+    </div>
+
+
+        
+</div>
+
+    <script src="https://kit.fontawesome.com/853995c1f2.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/js/home.js"></script>
+</body>
+</html>
