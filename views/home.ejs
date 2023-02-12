@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/home.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <title><%= title %></title>
 </head>
 <body>
@@ -18,7 +19,7 @@
                 <hr>
 
                 <label for="description">Description</label><br>
-                <input id="description" type="text" name="task" placeholder="What do you need to do?" required>    <br>
+                <input id="description" maxlength="35" type="text" name="task" placeholder="What do you need to do?" required>    <br>
 
                 <hr>
 
@@ -28,12 +29,12 @@
                         <tr>
                             <td>
                                 <label for="category">Category</label>  <br>
-                                    <select id="category">     
-                                        <option selected>Choose a Category</option>
-                                        <option value="work">WORK</option>
-                                        <option value="college">COLLEGE</option>
-                                        <option value="personal">PERSONAL</option>
-                                        <option value="home">HOME</option>
+                                    <select id="category" name="category">     
+                                        <option selected disabled value="NONE">Choose a Category</option>
+                                        <option value="WORK">WORK</option>
+                                        <option value="COLLEGE">COLLEGE</option>
+                                        <option value="PERSONAL">PERSONAL</option>
+                                        <option value="HOME">HOME</option>
                                     </select>          
                             </td>
 
@@ -45,59 +46,106 @@
                         </tr>
                     </table>
                         <hr>
-                        
-                        <button type="submit" id="addtask">+ ADD TASK</button>
+                       
+                </div>
+
+                <!-- UTILITY BUTTONS -->
+                <div id="util-buttons">
+                    <!-- Submit form Button -->
+                    <button type="submit" id="addtask">+ ADD TASK</button>
+
+                    <!-- Button to Delete tasks -->     
+                        <button id="delete" type="button"><i class="fa-solid fa-trash"></i> DELETE TASK</button>
 
                 </div>
 
             </form>
 
-                <!-- button to delete tasks -->
-                <a href="/delete-tasks/<% %>">      
-                    <button id="delete"><i class="fa-solid fa-trash"></i> DELETE TASK</button>
-                </a>
+                
         </div>
 
 
     
 
     <!-- Main tasks Display-->
-    <div id="tasks">
-        <hr>
-        <ul type="none">
-            <% for(let i of task_list) { %>
+    <div>
+        <% for(let i of task_list){ %>
 
-            <li>
+        <table id="display-tasks"   >
+            
+    
+                <tr>
+                    <td rowspan="2" id="checkbox"> 
+                        <input type="checkbox" class="largerCheckbox" value="<%= i._id%>">
+                    </td>
+    
+                    <td id="taskName">
+                        <%= i.taskname %>
+                    </td>
+
+
+                    <% if(i.category != undefined) { %>
+                    <td rowspan="2" id="td-category">
+                        <% if(i.category=="COLLEGE"){ %>
+                            <div id="display-category" style="background-color:<%="#9d0000"%>;">
+                                <%= i.category %>
+                            </div>
+                        <% } %>
+
+                        <% if(i.category=="PERSONAL"){ %>
+                            <div id="display-category" style="background-color:<%="#127600"%>;">
+                                    <%= i.category %>
+                            </div>
+                        <% } %>
+
+                        <% if(i.category=="WORK"){ %>
+                            <div id="display-category" style="background-color:<%="#ffb200"%>;">
+                                    <%= i.category %>
+                            </div>
+                        <% } %>
+
+                        <% if(i.category=="HOME"){ %>
+                            <div id="display-category" style="background-color:<%="#0f0250"%>;">
+                                    <%= i.category %>
+                            </div>
+                        <% } %>
+                    </td>
+                    <% } %>
+
+                </tr>
+                <tr>
+                    <td id="taskDeadline">
+                        <% let k=i.deadline %>
+                        <% let due_date; %>
+                            <% let yy = k.slice(0,4) %>
+                            <% let mm = k.slice(5,7) %>
+                            <% let dd = k.slice(8,10) %>
+        
+                            <% function getMonthName(monthNumber) { %>
+                            <% const date = new Date(); %>
+                            <% date.setMonth(monthNumber - 1); %>
+                            <% return date.toLocaleString('en-US', { month: 'long' }); %>
+                            <% } %>
+        
+                            <% mm = getMonthName(mm); %>
+                            <% mm = mm.slice(0,3); %>
+                            <% mm = mm.toUpperCase(); %>
+                                
+                            <% due_date= mm + " " + dd + ", " + yy %>
+
+                        <% if(dd == "") {due_date="NO DEADLINE";} %> 
+                        <i class="fa-solid fa-calendar-days"></i> <%= due_date %>
+                    </td>
+                </tr>
                 
-                <input type="checkbox" class="largerCheckbox">
-               <%= i.tname %> <br>
+                <hr>
+    
+        </table>
 
-               <% let k=i.duedate %>
-               <% let yy = k.slice(0,4) %>
-               <% let mm = k.slice(5,7) %>
-               <% let dd = k.slice(8,10) %>
-
-               <% function getMonthName(monthNumber) { %>
-               <% const date = new Date(); %>
-               <% date.setMonth(monthNumber - 1); %>
-               <% return date.toLocaleString('en-US', { month: 'long' }); %>
-               <% } %>
-
-               <% mm = getMonthName(mm); %>
-               <% mm = mm.slice(0,3); %>
-               <% mm = mm.toUpperCase(); %>
-
-               <% let due_date= mm + " " + dd + ", " + yy %>
-               <%  %>
-
-                &emsp;&ensp;<i class="fa-solid fa-calendar-days"></i> <%= due_date %>
-            </li>
-            <hr>
-
-            <% } %>
-        </ul>
+        <% } %>
     </div>
 
+    <hr>
 
         
 </div>
